@@ -52,12 +52,23 @@ def draw_ie_map(ie_map_df):
 #
 #     plot(fig)
 
-# def draw_transparency_map(transparency_table):
-#
-#     fig = px.choropleth(transparency_table,
-#                         locations=transparency_table.index,
-#                         hover_name="sipri_name",
-#                         color="Total",
-#                         projection="robinson")
-#
-#     plot(fig)
+def draw_transparency_map(transparency_table):
+
+    fig = px.choropleth(transparency_table,
+                        locations=transparency_table.index,
+                        hover_name="sipri_name",
+                        color="Total",
+                        projection="robinson")
+
+    plot(fig)
+
+def draw_stockpile_map(transparency_table):
+
+    #FIXME - this is broken
+    fig = px.choropleth(transparency_table,
+                        locations=transparency_table.index,
+                        hover_name="sipri_name",
+                        color="Total Recorded Munition Sum",
+                        projection="robinson")
+
+    plot(fig)
