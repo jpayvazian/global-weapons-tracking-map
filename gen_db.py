@@ -1,11 +1,21 @@
+"""
+Created 2021-06-12 12:36 PM
+
+@author: Victor Mercola
+"""
+
 import os
 import shutil
+
 import sipri
+
 import sipri_info as si
+
 
 def download_sipri_data():
     """
     Downloads SIPRI import and export data by country and stores them in CSV files under "data".
+
     :return: None
     """
     try:

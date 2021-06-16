@@ -1,9 +1,10 @@
+"""
+Created 2021-06-12 12:47 PM
+
+@author: Victor Mercola
+"""
 from typing import Dict, Tuple, List
 
-"""
-Dictionary that maps a SIPRI entity's full name to a tuple containing the entity's corresponding SIPRI code and ISO 
-alpha-3 code.
-"""
 ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Afghanistan": ("AFG", "AFG"),
     "African Union": ("AU", ""),
@@ -221,19 +222,23 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "eSwatini": ("SWA", "SWZ"),
 }
 """
+Dictionary that maps a SIPRI entity's full name to a tuple containing the entity's corresponding SIPRI code and ISO 
+alpha-3 code.
+"""
+
+
+SIPRI_CODES: List[str] = list(map(lambda x: x[0], ENTITY_DICT.values()))
+"""
 List of SIPRI codes.
 """
-SIPRI_CODES: List[str] = list(map(lambda x: x[0], ENTITY_DICT.values()))
 
+CSV_HEADER: str = "tidn,buyercod,sellercod,odat,odai,onum,onai,ldat,term,desig2,wcat,desc,coprod,nrdel,nrdelai," \
+                  "delyears,buyer,seller,status,tivunit,tivorder,tivdel "
 """
 Default SIPRI CSV header.
 """
-CSV_HEADER: str = "tidn,buyercod,sellercod,odat,odai,onum,onai,ldat,term,desig2,wcat,desc,coprod,nrdel,nrdelai," \
-                  "delyears,buyer,seller,status,tivunit,tivorder,tivdel "
 
-"""
-Dictionary that maps SIPRI weapon categories to their descriptions.
-"""
+
 WCATS_DICT = {
     "AC": "aircraft",
     "AR": "artillery",
@@ -247,3 +252,6 @@ WCATS_DICT = {
     "SA": "satellites",
     "AD": "air defense"
 }
+"""
+Dictionary that maps SIPRI weapon categories to their descriptions.
+"""
