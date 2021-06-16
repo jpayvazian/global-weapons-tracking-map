@@ -151,4 +151,56 @@ def load_tl_map_df() -> pd.DataFrame:
     """
     return pd.read_csv("data/tl_map_df.csv")
 
+def generate_transparency_index(start_year=1992) -> pd.DataFrame:
+    """Perform operations on the data we already have to generate a transparency index.
+
+    :param int start_year: Starting year (default 1992)
+    :return: DataFrame of transparency scores
+    """
+
+    transparency_table = pd.DataFrame(columns=extra_cols)
+
+    for key, value in si.ENTITY_DICT.items():
+
+        if value[1] != "":
+
+            country_series = pd.Series({'sipri_name': key,
+                                        'sipri_alpha': value[0],
+                                        'iso_alpha': value[1]})
+
+            print(key)
+
+            country_df = create_country_df(value[0])
+            country_df = country_df[country_df['odat'] >= 1992]
+
+            records = country_df.shape[0]
+            country_series = country_series.append(pd.Series({'sipri_records': records,
+                                                              'order_date_estimates': country_df['odai'].count(),
+                                                              'onum_nans': records - country_df['onum'].count(),
+                                                              'order_number_estimates': country_df['onai'].count(),
+                                                              'term_nans': records - country_df['term'].count(),
+                                                              'coprod_nans': records - country_df['coprod'].count(),
+                                                              'nrdel_nans': records - country_df['nrdel'].count(),
+                                                              'number_delivered_estimates': country_df['nrdelai'].count(),
+                                                              'delyears_nans': records - country_df['delyears'].count()}))
+            # print(country_series)
+            # "order date is estimate" = odai
+
+            transparency_table = transparency_table.append(country_series, ignore_index=True)
+
+    # Set keys of both tables to the ISO codes
+    transparency_table = transparency_table.set_index('iso_alpha')
+    unroca_table = pd.read_csv("UNROCA Countries Stockpiles.csv").set_index('ISO Code')
+
+    # Join together
+    transparency_table = transparency_table.join(unroca_table)
+
+    # Remove dashes where there should be NaNs
+    transparency_table = transparency_table.replace("-", np.nan)
+
+    transparency_table_file = open("data/transparency_table.csv", "w")
+    transparency_table.to_csv(path_or_buf=transparency_table_file, index=True)
+    transparency_table_file.close()
+
+    return transparency_table
 
