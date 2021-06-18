@@ -5,90 +5,24 @@ from typing import Set
 
 extra_cols = ["sipri_name", "sipri_alpha", "iso_alpha"]
 
-def create_buyer_dfs(sipri_code) -> pd.DataFrame:
+def create_df(sipri_code, is_import) -> pd.DataFrame:
     """Creates the buyer DataFrame of the given SIPRI entity from corresponding CSV files.
     :param str sipri_code: SIPRI code of chosen country
     :return: Buyer DataFrame
     """
-    buyer_df = pd.read_csv("data//" + sipri_code + "_buyer.csv", encoding='latin-1', index_col="tidn")
-    return buyer_df
+    df = pd.read_csv("data//" + sipri_code + "_buyer.csv", encoding='latin-1', index_col="tidn") if is_import else pd.read_csv("data//" + sipri_code + "_seller.csv", encoding='latin-1', index_col="tidn")
+    return df
 
-def create_seller_dfs(sipri_code) -> pd.DataFrame:
-    """Creates the seller DataFrame of the given SIPRI entity from corresponding CSV files.
-    :param str sipri_code: SIPRI code of chosen country
-    :return: Seller DataFrame
-    """
-    seller_df = pd.read_csv("data//" + sipri_code + "_seller.csv", encoding='latin-1', index_col="tidn")
-    return seller_df
-
-# def perform_db_i_ops() -> pd.DataFrame:
-#     """Performs the database operations for imports/exports map.
-#     :return: Map DataFrame for drawing a choropleth map of imports.
-#     """
-#     i_map_df = pd.DataFrame(columns=extra_cols)
-#     for key, value in si.ENTITY_DICT.items():
-#         print(key)
-#
-#         country_df = create_buyer_dfs(value[0])
-#         weapons_pt = pd.pivot_table(country_df,
-#                                     values='nrdel',
-#                                     index='wcat',
-#                                     aggfunc=np.sum,
-#                                     margins=True,
-#                                     fill_value=0)
-#         new_row = pd.Series({'sipri_name': key,
-#                              'sipri_alpha': value[0],
-#                              'iso_alpha': value[1]})
-#
-#         new_row = new_row.append(weapons_pt["nrdel"])
-#         i_map_df = i_map_df.append(new_row, ignore_index=True)
-#
-#     i_map_df = i_map_df.fillna(0)
-#     i_map_df_file = open("data/i_map_df.csv", "w")
-#     i_map_df.to_csv(path_or_buf=i_map_df_file, index=False)
-#     i_map_df_file.close()
-#
-#     return i_map_df
-#
-# def perform_db_e_ops() -> pd.DataFrame:
-#     """Performs the database operations for imports/exports map.
-#     :return: Map DataFrame for drawing a choropleth map of exports.
-#     """
-#     e_map_df = pd.DataFrame(columns=extra_cols)
-#     for key, value in si.ENTITY_DICT.items():
-#         print(key)
-#
-#         country_df = create_seller_dfs(value[0])
-#         weapons_pt = pd.pivot_table(country_df,
-#                                     values='nrdel',
-#                                     index='wcat',
-#                                     aggfunc=np.sum,
-#                                     margins=True,
-#                                     fill_value=0)
-#         new_row = pd.Series({'sipri_name': key,
-#                              'sipri_alpha': value[0],
-#                              'iso_alpha': value[1]})
-#
-#         new_row = new_row.append(weapons_pt["nrdel"])
-#         e_map_df = e_map_df.append(new_row, ignore_index=True)
-#
-#     e_map_df = e_map_df.fillna(0)
-#     e_map_df_file = open("data/e_map_df.csv", "w")
-#     e_map_df.to_csv(path_or_buf=e_map_df_file, index=False)
-#     e_map_df_file.close()
-#
-#     return e_map_df
-
-def perform_db_i_timelapse_ops() -> pd.DataFrame:
+def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
     """Performs the database "import minus export" operations.
     :return: Map DataFrame for drawing a choropleth map of imports & exports.
     """
-    tl_map_i_df = pd.DataFrame(columns=extra_cols)
+    tl_map_df = pd.DataFrame(columns=extra_cols)
 
     for key, value in si.ENTITY_DICT.items():
         print(key)
 
-        country_df = create_buyer_dfs(value[0])
+        country_df = create_df(value[0], True) if is_import else create_df(value[0], False)
 
         if not country_df.empty:
             weapons_timelapse_pt = pd.pivot_table(country_df,
@@ -108,97 +42,32 @@ def perform_db_i_timelapse_ops() -> pd.DataFrame:
                                      'odat': pt_row[0]})
                 new_row = new_row.append(pt_row[1])
                 if new_row["odat"] != "All":
-                    tl_map_i_df = tl_map_i_df.append(new_row, ignore_index=True)
+                    tl_map_df = tl_map_df.append(new_row, ignore_index=True)
 
-    tl_map_i_df = tl_map_i_df.fillna(0)
+    tl_map_df = tl_map_df.fillna(0)
 
-    for x in range(len(tl_map_i_df.index) - 1):
-        if tl_map_i_df.iloc[x]["sipri_name"] == tl_map_i_df.iloc[x+1]["sipri_name"]:
-            tl_map_i_df.at[x+1, "All"] += tl_map_i_df.at[x, "All"]
+    for x in range(len(tl_map_df.index) - 1):
+        if tl_map_df.iloc[x]["sipri_name"] == tl_map_df.iloc[x+1]["sipri_name"]:
+            tl_map_df.at[x+1, "All"] += tl_map_df.at[x, "All"]
 
     #fill in years between with same total
-    tl_map_i_df.astype({'odat': np.int64})
+    tl_map_df.astype({'odat': np.int64})
 
     for key, value in si.ENTITY_DICT.items():
-        if key in tl_map_i_df.values:
-            for y in range(int(tl_map_i_df.loc[tl_map_i_df['sipri_name'] == key]["odat"].min()), 2021):
-                if not ((tl_map_i_df['sipri_name'] == key) & (tl_map_i_df['odat'] == y)).any():
+        if key in tl_map_df.values:
+            for y in range(int(tl_map_df.loc[tl_map_df['sipri_name'] == key]["odat"].min()), 2021):
+                if not ((tl_map_df['sipri_name'] == key) & (tl_map_df['odat'] == y)).any():
 
-                    fill_row = tl_map_i_df.loc[(tl_map_i_df["sipri_name"] == key) & (tl_map_i_df["odat"] == y-1)].copy()
+                    fill_row = tl_map_df.loc[(tl_map_df["sipri_name"] == key) & (tl_map_df["odat"] == y-1)].copy()
                     fill_row["odat"] = y
-                    tl_map_i_df = tl_map_i_df.append(fill_row, ignore_index=True)
+                    tl_map_df = tl_map_df.append(fill_row, ignore_index=True)
 
-    tl_map_i_df_file = open("data/tl_map_i_df.csv", "w")
-    tl_map_i_df.to_csv(path_or_buf=tl_map_i_df_file, index=False)
-    tl_map_i_df_file.close()
+    file = "data/tl_map_i_df.csv" if is_import else "data/tl_map_e_df.csv"
+    tl_map_df_file = open(file, "w")
+    tl_map_df.to_csv(path_or_buf=tl_map_df_file, index=False)
+    tl_map_df_file.close()
 
-    return tl_map_i_df
-
-def perform_db_e_timelapse_ops() -> pd.DataFrame:
-    """Performs the database "import minus export" operations.
-    :return: Map DataFrame for drawing a choropleth map of imports & exports.
-    """
-    tl_map_e_df = pd.DataFrame(columns=extra_cols)
-
-    for key, value in si.ENTITY_DICT.items():
-        print(key)
-
-        country_df = create_seller_dfs(value[0])
-
-        if not country_df.empty:
-            weapons_timelapse_pt = pd.pivot_table(country_df,
-                                                  values='nrdel',
-                                                  index=['odat'],
-                                                  columns='wcat',
-                                                  aggfunc=np.sum,
-                                                  margins=True,
-                                                  fill_value=0)
-
-            weapons_timelapse_pt = weapons_timelapse_pt.fillna(0)
-
-            for pt_row in weapons_timelapse_pt.iterrows():
-                new_row = pd.Series({'sipri_name': key,
-                                     'sipri_alpha': value[0],
-                                     'iso_alpha': value[1],
-                                     'odat': pt_row[0]})
-                new_row = new_row.append(pt_row[1])
-                if new_row["odat"] != "All":
-                    tl_map_e_df = tl_map_e_df.append(new_row, ignore_index=True)
-
-    tl_map_e_df = tl_map_e_df.fillna(0)
-
-    for x in range(len(tl_map_e_df.index) - 1):
-        if tl_map_e_df.iloc[x]["sipri_name"] == tl_map_e_df.iloc[x + 1]["sipri_name"]:
-            tl_map_e_df.at[x + 1, "All"] += tl_map_e_df.at[x, "All"]
-
-        # fill in years between with same total
-        tl_map_e_df.astype({'odat': np.int64})
-
-    for key, value in si.ENTITY_DICT.items():
-        if key in tl_map_e_df.values:
-            for y in range(int(tl_map_e_df.loc[tl_map_e_df['sipri_name'] == key]["odat"].min()), 2021):
-                if not ((tl_map_e_df['sipri_name'] == key) & (tl_map_e_df['odat'] == y)).any():
-                    fill_row = tl_map_e_df.loc[(tl_map_e_df["sipri_name"] == key) & (tl_map_e_df["odat"] == y - 1)].copy()
-                    fill_row["odat"] = y
-                    tl_map_e_df = tl_map_e_df.append(fill_row, ignore_index=True)
-
-    tl_map_e_df_file = open("data/tl_map_e_df.csv", "w")
-    tl_map_e_df.to_csv(path_or_buf=tl_map_e_df_file, index=False)
-    tl_map_e_df_file.close()
-
-    return tl_map_e_df
-
-# def load_i_map_df() -> pd.DataFrame:
-#     """Returns a previously-made i_map_df.csv file.
-#     :return: Map DataFrame for drawing a choropleth map of imports.
-#     """
-#     return pd.read_csv("data/i_map_df.csv")
-#
-# def load_e_map_df() -> pd.DataFrame:
-#     """Returns a previously-made e_map_df.csv file.
-#     :return: Map DataFrame for drawing a choropleth map of exports.
-#     """
-#     return pd.read_csv("data/e_map_df.csv")
+    return tl_map_df
 
 def load_transparency_df(start_year=1992) -> pd.DataFrame:
     """Perform operations on the data we already have to generate a transparency index.
@@ -216,14 +85,9 @@ def load_stockpiles_df() -> pd.DataFrame:
     stockpile_df = pd.read_csv("Stockpiles.csv").set_index('ISO Code')
     return stockpile_df
 
-def load_tl_i_map_df() -> pd.DataFrame:
+def load_tl_map_df(is_import) -> pd.DataFrame:
     """Returns a previously-made tl_map_i_df.csv file.
     :return: Map DataFrame for drawing a timeline choropleth map of imports.
     """
-    return pd.read_csv("data/tl_map_i_df.csv")
-
-def load_tl_e_map_df() -> pd.DataFrame:
-    """Returns a previously-made tl_map_e_df.csv file.
-    :return: Map DataFrame for drawing a timeline choropleth map of exports.
-    """
-    return pd.read_csv("data/tl_map_e_df.csv")
+    tl_map_df = pd.read_csv("data/tl_map_i_df.csv") if is_import else pd.read_csv("data/tl_map_e_df.csv")
+    return tl_map_df

@@ -15,26 +15,12 @@ if __name__ == "__main__":
     # if prompt("Download Import & Export Tables from SIPRI [y/n]?"):
     #     gen_db.download_sipri_data()
 
-    # if prompt("Perform import & export database operations [y/n]?"):
-    #     i_map_df = db_ops.perform_db_i_ops()
-    #     e_map_df = db_ops.perform_db_e_ops()
-    #
-    # else:
-    #     i_map_df = db_ops.load_i_map_df()
-    #     e_map_df = db_ops.load_e_map_df()
-    #
-    # if prompt("Draw import map [y/n]?"):
-    #     map_drawing.draw_ie_map(i_map_df)
-    #
-    # if prompt("Draw export map [y/n]?"):
-    #     map_drawing.draw_ie_map(e_map_df)
-
     if prompt("Perform import & export over-time database operations [y/n]?"):
-        tl_i_map_df = db_ops.perform_db_i_timelapse_ops()
-        tl_e_map_df = db_ops.perform_db_e_timelapse_ops()
+        tl_i_map_df = db_ops.perform_db_timelapse_ops(True)
+        tl_e_map_df = db_ops.perform_db_timelapse_ops(False)
     else:
-        tl_i_map_df = db_ops.load_tl_i_map_df()
-        tl_e_map_df = db_ops.load_tl_e_map_df()
+        tl_i_map_df = db_ops.load_tl_map_df(True)
+        tl_e_map_df = db_ops.load_tl_map_df(False)
 
     if prompt("Draw timelapse import map [y/n]?"):
         map_drawing.draw_tl_map(tl_i_map_df)
