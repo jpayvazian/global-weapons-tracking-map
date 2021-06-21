@@ -35,3 +35,6 @@ if __name__ == "__main__":
     if prompt("Draw stockpiles map [y/n]?"):
         stockpiles_df = db_ops.load_stockpiles_df()
         map_drawing.draw_stockpiles_map(stockpiles_df)
+
+    if prompt("Draw combined I/E map [y/n]?"):
+        map_drawing.draw_combined_ie_map(tl_i_map_df, tl_e_map_df)

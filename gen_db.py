@@ -3,6 +3,7 @@ import shutil
 import sipri
 import sipri_info as si
 
+
 def download_sipri_data():
     """
     Downloads SIPRI import and export data by country and stores them in CSV files under "data".
