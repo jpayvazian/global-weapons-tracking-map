@@ -235,15 +235,15 @@ CSV_HEADER: str = "tidn,buyercod,sellercod,odat,odai,onum,onai,ldat,term,desig2,
 Dictionary that maps SIPRI weapon categories to their descriptions.
 """
 WCATS_DICT = {
-    "AC": "aircraft",
-    "AR": "artillery",
-    "AV": "armored vehicles",
-    "EN": "engines",
-    "GR": "sensors",
-    "MI": "missiles",
-    "SH": "ships",
-    "OT": "other",
-    "NW": "naval weapons",
-    "SA": "satellites",
-    "AD": "air defense"
+    "AC": "Aircraft",
+    "AR": "Artillery",
+    "AV": "Armored vehicles",
+    "EN": "Engines",
+    "GR": "Sensors",
+    "MI": "Missiles",
+    "SH": "Ships",
+    "OT": "Other",
+    "NW": "Naval weapons",
+    "SA": "Satellites",
+    "AD": "Air defense"
 }
