@@ -1,20 +1,26 @@
 import pandas as pd
 import numpy as np
 import sipri_info as si
-from typing import Set
 
 extra_cols = ["sipri_name", "sipri_alpha", "iso_alpha"]
 
+
 def create_df(sipri_code, is_import) -> pd.DataFrame:
-    """Creates the buyer DataFrame of the given SIPRI entity from corresponding CSV files.
+    """Creates the buyer/seller DataFrame of the given SIPRI entity from corresponding CSV files.
     :param str sipri_code: SIPRI code of chosen country
-    :return: Buyer DataFrame
+    :param boolean is_import: True if data is imports, False if exports
+    :return: DataFrame for buyer or seller
     """
-    df = pd.read_csv("data//" + sipri_code + "_buyer.csv", encoding='latin-1', index_col="tidn") if is_import else pd.read_csv("data//" + sipri_code + "_seller.csv", encoding='latin-1', index_col="tidn")
+    if is_import:
+        df = pd.read_csv("data//" + sipri_code + "_buyer.csv", encoding='latin-1', index_col="tidn")
+    else:
+        df = pd.read_csv("data//" + sipri_code + "_seller.csv", encoding='latin-1', index_col="tidn")
     return df
 
+
 def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
-    """Performs the database "import minus export" operations.
+    """Performs the database operations to accumulate imports/exports over time.
+     :param boolean is_import: True if data is imports, False if exports
     :return: Map DataFrame for drawing a choropleth map of imports & exports.
     """
     tl_map_df = pd.DataFrame(columns=extra_cols)
@@ -50,7 +56,7 @@ def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
         if tl_map_df.iloc[x]["sipri_name"] == tl_map_df.iloc[x+1]["sipri_name"]:
             tl_map_df.at[x+1, "All"] += tl_map_df.at[x, "All"]
 
-    #fill in years between with same total
+    # fill in years between with same total
     tl_map_df.astype({'odat': np.int64})
 
     for key, value in si.ENTITY_DICT.items():
@@ -69,25 +75,27 @@ def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
 
     return tl_map_df
 
-def load_transparency_df(start_year=1992) -> pd.DataFrame:
-    """Perform operations on the data we already have to generate a transparency index.
-    :param int start_year: Starting year (default 1992)
+
+def load_transparency_df() -> pd.DataFrame:
+    """Loads transparency data CSV file.
     :return: DataFrame of transparency scores
     """
     transparency_df = pd.read_csv("Transparency.csv").set_index('ISO Code')
     return transparency_df
 
+
 def load_stockpiles_df() -> pd.DataFrame:
-    """Creates the stockpiles DataFrame of the given SIPRI entity from corresponding CSV files.
-        :param str sipri_code: SIPRI code of chosen country
-        :return: Stockpiles DataFrame
+    """Loads stockpiles data CSV file.
+    :return: Stockpiles DataFrame
     """
     stockpile_df = pd.read_csv("Stockpiles.csv").set_index('ISO Code')
     return stockpile_df
 
+
 def load_tl_map_df(is_import) -> pd.DataFrame:
-    """Returns a previously-made tl_map_i_df.csv file.
-    :return: Map DataFrame for drawing a timeline choropleth map of imports.
+    """Loads previously-made tl_map_df.csv file.
+    :param boolean is_import: True if data is imports, False if exports
+    :return: Map DataFrame for drawing a timeline choropleth map of imports/exports.
     """
     tl_map_df = pd.read_csv("data/tl_map_i_df.csv") if is_import else pd.read_csv("data/tl_map_e_df.csv")
     return tl_map_df

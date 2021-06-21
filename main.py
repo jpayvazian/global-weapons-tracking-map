@@ -12,8 +12,8 @@ def prompt(prompt_str) -> bool:
 
 if __name__ == "__main__":
 
-    # if prompt("Download Import & Export Tables from SIPRI [y/n]?"):
-    #     gen_db.download_sipri_data()
+    if prompt("Download Import & Export Tables from SIPRI [y/n]?"):
+        gen_db.download_sipri_data()
 
     if prompt("Perform import & export over-time database operations [y/n]?"):
         tl_i_map_df = db_ops.perform_db_timelapse_ops(True)
@@ -23,10 +23,10 @@ if __name__ == "__main__":
         tl_e_map_df = db_ops.load_tl_map_df(False)
 
     if prompt("Draw timelapse import map [y/n]?"):
-        map_drawing.draw_tl_map(tl_i_map_df)
+        map_drawing.draw_tl_map(tl_i_map_df, True)
 
     if prompt("Draw timelapse export map [y/n]?"):
-        map_drawing.draw_tl_map(tl_e_map_df)
+        map_drawing.draw_tl_map(tl_e_map_df, False)
 
     if prompt("Draw transparency map [y/n]?"):
         transparency_df = db_ops.load_transparency_df()
