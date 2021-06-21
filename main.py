@@ -12,8 +12,8 @@ def prompt(prompt_str) -> bool:
 
 if __name__ == "__main__":
 
-    # if prompt("Download Import & Export Tables from SIPRI [y/n]?"):
-    #     gen_db.download_sipri_data()
+    if prompt("Download Import & Export Tables from SIPRI [y/n]?"):
+        gen_db.download_sipri_data()
 
     if prompt("Perform import & export over-time database operations [y/n]?"):
         tl_i_map_df = db_ops.perform_db_timelapse_ops(True)
