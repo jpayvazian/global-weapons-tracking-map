@@ -2,6 +2,7 @@ import gen_db
 import db_ops
 import map_drawing
 
+
 def prompt(prompt_str) -> bool:
     """ 
     Prompts the user a question that can be answered with yes (y) or no (n); defaults to no.

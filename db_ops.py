@@ -21,14 +21,16 @@ def create_df(sipri_code, is_import) -> pd.DataFrame:
         df = pd.read_csv("data//" + sipri_code + "_buyer.csv", encoding='latin-1', index_col="tidn")
     else:
         df = pd.read_csv("data//" + sipri_code + "_seller.csv", encoding='latin-1', index_col="tidn")
+
     return df
 
 
-def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
+def perform_db_timelapse_ops(is_import, starting_year=1992) -> pd.DataFrame:
     """
     Performs the database operations to accumulate imports/exports over time.
 
     :param boolean is_import: True if data is imports, False if exports
+    :param int starting_year: Beginning year of the timelapse (default 1992)
     :return: Map DataFrame for drawing a choropleth map of imports & exports.
     """
 
@@ -39,8 +41,10 @@ def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
     for key, value in si.ENTITY_DICT.items():
         print(key)
 
-        # Create the corresponding import/export DataFrame for this country
+        # Create the corresponding import/export DataFrame for this country & filter it by the starting year
         country_df = create_df(value[0], True) if is_import else create_df(value[0], False)
+        country_df = country_df[country_df["odat"] >= starting_year]
+
 
         if not country_df.empty:
 
@@ -75,9 +79,6 @@ def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
         if tl_map_df.iloc[x]["sipri_name"] == tl_map_df.iloc[x + 1]["sipri_name"]:
             tl_map_df.at[x + 1, "All"] += tl_map_df.at[x, "All"]
 
-    # fill in years between with same total
-    tl_map_df.astype({'odat': np.int64})
-
     for key, value in si.ENTITY_DICT.items():
         if key in tl_map_df.values:
             for y in range(int(tl_map_df.loc[tl_map_df['sipri_name'] == key]["odat"].min()), 2021):
@@ -90,6 +91,21 @@ def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
     tl_map_df_file = open(file, "w")
     tl_map_df.to_csv(path_or_buf=tl_map_df_file, index=False)
     tl_map_df_file.close()
+
+    tl_map_df = tl_map_df.astype({
+        "odat": np.int32,
+        "AC": np.int32,
+        "AR": np.int32,
+        "AV": np.int32,
+        "EN": np.int32,
+        "GR": np.int32,
+        "MI": np.int32,
+        "SH": np.int32,
+        "OT": np.int32,
+        "NW": np.int32,
+        "SA": np.int32,
+        "AD": np.int32
+    })
 
     return tl_map_df
 
@@ -122,4 +138,20 @@ def load_tl_map_df(is_import) -> pd.DataFrame:
     :return: Map DataFrame for drawing a timeline choropleth map of imports/exports.
     """
     tl_map_df = pd.read_csv("data/tl_map_i_df.csv") if is_import else pd.read_csv("data/tl_map_e_df.csv")
+
+    tl_map_df = tl_map_df.astype({
+        "odat": np.int32,
+        "AC": np.int32,
+        "AR": np.int32,
+        "AV": np.int32,
+        "EN": np.int32,
+        "GR": np.int32,
+        "MI": np.int32,
+        "SH": np.int32,
+        "OT": np.int32,
+        "NW": np.int32,
+        "SA": np.int32,
+        "AD": np.int32
+    })
+
     return tl_map_df
