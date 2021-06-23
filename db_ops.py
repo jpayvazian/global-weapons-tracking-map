@@ -50,41 +50,38 @@ def perform_db_timelapse_ops(is_import) -> pd.DataFrame:
                                                   index='odat',
                                                   columns='wcat',
                                                   aggfunc=np.sum,
-                                                  margins=True,
+                                                  margins=True,  # creates the "All" row and column
                                                   fill_value=0)
 
             # Fill NaNs
-            weapons_timelapse_pt = weapons_timelapse_pt.fillna(0)
+            weapons_timelapse_pt.fillna(0, inplace=True)
+            weapons_timelapse_pt.drop("All", inplace=True)  # Does not drop everything, just one of the margins
+            weapons_timelapse_pt.reset_index(inplace=True)
 
             # TODO: Optimize this code! When adding rows to the tl_map_df DataFrame, perform operations here instead
             #  to calculate the cumulative sums by year.
 
             # Populate the rows of tl_map_df
             for pt_row in weapons_timelapse_pt.iterrows():
+                # Create a new row with this country's information
                 new_row = pd.Series({'sipri_name': key,
                                      'sipri_alpha': value[0],
                                      'iso_alpha': value[1],
-                                     'odat': pt_row[0]})
-                new_row = new_row.append(pt_row[1])
-                if new_row["odat"] != "All":
-                    tl_map_df = tl_map_df.append(new_row, ignore_index=True)
+                                     'odat': pt_row[1]["odat"]})
+
+                new_row_data = np.sum(
+                    weapons_timelapse_pt[weapons_timelapse_pt["odat"] <= pt_row[1]["odat"]].drop(["odat"], axis=1))
+
+                new_row = new_row.append(new_row_data)
+                tl_map_df = tl_map_df.append(new_row, ignore_index=True)
+
+            for year in range(weapons_timelapse_pt["odat"].min(), weapons_timelapse_pt["odat"].max()):
+                if not (year in weapons_timelapse_pt["odat"].to_list()):
+                    previous_year_data = tl_map_df[(tl_map_df["iso_alpha"] == "AFG") & (tl_map_df["odat"] == (year - 1))]
+                    previous_year_data.assign(odat=year)
+                    tl_map_df = tl_map_df.append(previous_year_data, ignore_index=True)
 
     tl_map_df = tl_map_df.fillna(0)
-
-    for x in range(len(tl_map_df.index) - 1):
-        if tl_map_df.iloc[x]["sipri_name"] == tl_map_df.iloc[x + 1]["sipri_name"]:
-            tl_map_df.at[x + 1, "All"] += tl_map_df.at[x, "All"]
-
-    # fill in years between with same total
-    tl_map_df.astype({'odat': np.int64})
-
-    for key, value in si.ENTITY_DICT.items():
-        if key in tl_map_df.values:
-            for y in range(int(tl_map_df.loc[tl_map_df['sipri_name'] == key]["odat"].min()), 2021):
-                if not ((tl_map_df['sipri_name'] == key) & (tl_map_df['odat'] == y)).any():
-                    fill_row = tl_map_df.loc[(tl_map_df["sipri_name"] == key) & (tl_map_df["odat"] == y - 1)].copy()
-                    fill_row["odat"] = y
-                    tl_map_df = tl_map_df.append(fill_row, ignore_index=True)
 
     file = "data/tl_map_i_df.csv" if is_import else "data/tl_map_e_df.csv"
     tl_map_df_file = open(file, "w")
