@@ -7,7 +7,9 @@ import sipri_info as si
 
 
 def draw_tl_map(tl_map_df, is_import):
-    """Draws the "imports and exports over time" map using Plotly.
+    """
+    Draws the "imports and exports over time" map using Plotly.
+
     :param pd.DataFrame tl_map_df: Map DataFrame for drawing choropleth map over time.
     :param boolean is_import: True is data is imports, False if exports
     :return: None, but creates HTML file
@@ -40,7 +42,9 @@ def draw_tl_map(tl_map_df, is_import):
 
 
 def draw_transparency_map(transparency_df):
-    """Draws the "Transparency indicator" map using Plotly.
+    """
+    Draws the "Transparency indicator" map using Plotly.
+
     :param pd.DataFrame transparency_df: Map DataFrame for drawing choropleth map.
     :return: None, but creates HTML file
     """
@@ -57,7 +61,9 @@ def draw_transparency_map(transparency_df):
 
 
 def draw_stockpiles_map(stockpiles_df):
-    """Draws the "Stockpiles" map using Plotly.
+    """
+    Draws the "Stockpiles" map using Plotly.
+
     :param pd.DataFrame stockpiles_df: Map DataFrame for drawing choropleth map.
     :return: None, but creates HTML file
     """
@@ -75,7 +81,8 @@ def draw_stockpiles_map(stockpiles_df):
 
 
 def draw_combined_ie_map(tl_i_map_df, tl_e_map_df):
-    """Draws a combined version of the imports & exports map over time.
+    """
+    Draws a combined version of the imports & exports map over time.
 
     :param pd.DataFrame tl_i_map_df: DataFrame for Imports
     :param pd.DataFrame tl_e_map_df: DataFrame for Exports
