@@ -1,12 +1,9 @@
 from typing import Dict, Tuple, List
 
-"""
-Dictionary that maps a SIPRI entity's full name to a tuple containing the entity's corresponding SIPRI code and ISO 
-alpha-3 code.
-"""
+
 ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Afghanistan": ("AFG", "AFG"),
-    "African Union": ("AU", ""),
+    # "African Union": ("AU", ""),
     "Albania": ("ALB", "ALB"),
     "Algeria": ("ALG", "DZA"),
     "Angola": ("ANG", "AGO"),
@@ -51,7 +48,7 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Cyprus": ("CYP", "CYP"),
     "Czechia": ("CZR", "CZE"),
     "DR Congo": ("DRC", "COD"),
-    "Darfur rebels (Sudan)*": ("XSD", ""),
+    # "Darfur rebels (Sudan)*": ("XSD", ""),
     "Denmark": ("DEN", "DNK"),
     "Djibouti": ("DJI", "DJI"),
     "Dominican Republic": ("DOM", "DOM"),
@@ -76,10 +73,10 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Guinea-Bissau": ("GBI", "GNB"),
     "Guyana": ("GUY", "GUY"),
     "Haiti": ("HAI", "HTI"),
-    "Hamas (Palestine)*": ("XPA", ""),
-    "Hezbollah (Lebanon)*": ("XLH", ""),
+    # "Hamas (Palestine)*": ("XPA", ""),
+    # "Hezbollah (Lebanon)*": ("XLH", ""),
     "Honduras": ("HON", "HND"),
-    "Houthi rebels (Yemen)*": ("XYH", ""),
+    # "Houthi rebels (Yemen)*": ("XYH", ""),
     "Hungary": ("HUN", "HUN"),
     "Iceland": ("ICE", "ISL"),
     "India": ("IND", "IND"),
@@ -98,16 +95,16 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Kosovo": ("KSV", "KSV"),  # Kosovo is disputed, UNK did not work
     "Kuwait": ("KUW", "KWT"),
     "Kyrgyzstan": ("KYR", "KGZ"),
-    "LRA (Uganda)": ("XUL", ""),
-    "LTTE (Sri Lanka)": ("XSL", ""),
+    # "LRA (Uganda)": ("XUL", ""),
+    # "LTTE (Sri Lanka)": ("XSL", ""),
     "Laos": ("LAO", "LAO"),
     "Latvia": ("LAT", "LVA"),
     "Lebanon": ("LEB", "LBN"),
     "Lesotho": ("LES", "LSO"),
     "Liberia": ("LIB", "LBR"),
     "Libya": ("LYA", "LBY"),
-    "Libya GNC": ("LYW", ""),  # Not really sure what's going on here
-    "Libya HoR": ("LYE", ""),  # Not really sure what's going on here
+    # "Libya GNC": ("LYW", ""),
+    # "Libya HoR": ("LYE", ""),
     "Lithuania": ("LIT", "LTU"),
     "Luxembourg": ("LUX", "LUX"),
     "Madagascar": ("MAD", "MDG"),
@@ -127,9 +124,9 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Morocco": ("MOR", "MAR"),
     "Mozambique": ("MOZ", "MOZ"),
     "Myanmar": ("MYA", "MMR"),
-    "NATO": ("NAT", ""),
-    "NLA (Macedonia)": ("XMN", ""),
-    "NTC (Libya)": ("XLB", ""),
+    # "NATO": ("NAT", ""),
+    # "NLA (Macedonia)": ("XMN", ""),
+    # "NTC (Libya)": ("XLB", ""),
     "Namibia": ("NAM", "NAM"),
     "Nepal": ("NEP", "NPL"),
     "Netherlands": ("NET", "NLD"),
@@ -139,13 +136,13 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Nigeria": ("NIG", "NGA"),
     "North Korea": ("KON", "PRK"),
     "North Macedonia": ("MAC", "MKD"),
-    "Northern Alliance (Afghanistan)": ("XAN", ""),
+    # "Northern Alliance (Afghanistan)": ("XAN", ""),
     "Norway": ("NOR", "NOR"),
-    "OSCE": ("OSC", ""),
+    # "OSCE": ("OSC", ""),
     "Oman": ("OMA", "OMN"),
-    "PIJ (Israel/Palestine)": ("XID", ""),
-    "PKK (Turkey)": ("XTP", ""),
-    "PRC (Israel/Palestine)": ("XPC", ""),
+    # "PIJ (Israel/Palestine)": ("XID", ""),
+    # "PKK (Turkey)": ("XTP", ""),
+    # "PRC (Israel/Palestine)": ("XPC", ""),
     "Pakistan": ("PAK", "PAK"),
     "Palau": ("PAL", "PLW"),
     "Palestine": ("PA", "PSE"),
@@ -157,8 +154,8 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Poland": ("POL", "POL"),
     "Portugal": ("POR", "PRT"),
     "Qatar": ("QAT", "QAT"),
-    "RUF (Sierra Leone)": ("XSR", ""),
-    "Regional Security System": ("RSS", ""),
+    # "RUF (Sierra Leone)": ("XSR", ""),
+    # "Regional Security System": ("RSS", ""),
     "Romania": ("ROM", "ROU"),
     "Russia": ("RUS", "RUS"),
     "Rwanda": ("RWA", "RWA"),
@@ -185,7 +182,7 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Sweden": ("SWE", "SWE"),
     "Switzerland": ("SWI", "CHE"),
     "Syria": ("SYR", "SYR"),
-    "Syria rebels": ("XSX", ""),
+    # "Syria rebels": ("XSX", ""),
     "Taiwan": ("TAI", "TWN"),
     "Tajikistan": ("TAJ", "TJK"),
     "Tanzania": ("TAN", "TZA"),
@@ -199,16 +196,16 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "Turkmenistan": ("TRK", "TKM"),
     "Tuvalu": ("TUV", "TUV"),
     "UAE": ("UAE", "ARE"),
-    "UIC (Somalia)": ("XSI", ""),
+    # "UIC (Somalia)": ("XSI", ""),
     "Uganda": ("UGA", "UGA"),
     "Ukraine": ("UKR", "UKR"),
-    "Ukraine Rebels": ("XUR", ""),
+    # "Ukraine Rebels": ("XUR", ""),
     "United Kingdom": ("UK", "GBR"),
-    "United Nations": ("UNO", ""),
+    # "United Nations": ("UNO", ""),
     "United States": ("USA", "USA"),
-    "United Wa State (Myanmar)": ("XMU", ""),
-    "Unknown rebel group": ("XXU", ""),
-    "Unknown recipient(s)": ("XXR", ""),
+    # "United Wa State (Myanmar)": ("XMU", ""),
+    # "Unknown rebel group": ("XXU", ""),
+    # "Unknown recipient(s)": ("XXR", ""),
     "Uruguay": ("URU", "URY"),
     "Uzbekistan": ("UZB", "UZB"),
     "Vanuatu": ("VAN", "VUT"),
@@ -221,19 +218,21 @@ ENTITY_DICT: Dict[str, Tuple[str, str]] = {
     "eSwatini": ("SWA", "SWZ"),
 }
 """
-List of SIPRI codes.
+Dictionary that maps a SIPRI entity's full name to a tuple containing the entity's corresponding SIPRI code and ISO 
+alpha-3 code.
 """
-SIPRI_CODES: List[str] = list(map(lambda x: x[0], ENTITY_DICT.values()))
 
+# SIPRI_CODES: List[str] = list(map(lambda x: x[0], ENTITY_DICT.values()))
+# """
+# List of SIPRI codes.
+# """
+
+CSV_HEADER: str = "tidn,buyercod,sellercod,odat,odai,onum,onai,ldat,term,desig2,wcat,desc,coprod,nrdel,nrdelai," \
+                  "delyears,buyer,seller,status,tivunit,tivorder,tivdel "
 """
 Default SIPRI CSV header.
 """
-CSV_HEADER: str = "tidn,buyercod,sellercod,odat,odai,onum,onai,ldat,term,desig2,wcat,desc,coprod,nrdel,nrdelai," \
-                  "delyears,buyer,seller,status,tivunit,tivorder,tivdel "
 
-"""
-Dictionary that maps SIPRI weapon categories to their descriptions.
-"""
 WCATS_DICT = {
     "AC": "Aircraft",
     "AR": "Artillery",
@@ -247,3 +246,6 @@ WCATS_DICT = {
     "SA": "Satellites",
     "AD": "Air defense"
 }
+"""
+Dictionary that maps SIPRI weapon categories to their descriptions.
+"""
