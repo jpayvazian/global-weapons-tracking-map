@@ -1,3 +1,13 @@
+"""
+@file gen_db.py
+
+The functions in this file are used for downloading data from OSINT databases.
+
+@author Victor Mercola
+@author Benjamin Lunden
+@author Jack Ayvazian
+"""
+
 import os
 import shutil
 import sipri

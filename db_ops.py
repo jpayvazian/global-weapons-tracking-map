@@ -1,3 +1,13 @@
+"""
+@file db_ops.py
+
+The functions in this file are used for performing specific operations on databases.
+
+@author Victor Mercola
+@author Benjamin Lunden
+@author Jack Ayvazian
+"""
+
 import numpy as np
 import pandas as pd
 

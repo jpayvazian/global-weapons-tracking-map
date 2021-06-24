@@ -1,3 +1,13 @@
+"""
+@file main.py
+
+Top-level operations for generating the map for the Global Weapons Tracking website.
+
+@author Victor Mercola
+@author Benjamin Lunden
+@author Jack Ayvazian
+"""
+
 import gen_db
 import db_ops
 import map_drawing

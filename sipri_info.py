@@ -1,3 +1,12 @@
+"""
+@file sipri_info.py
+
+The data structures in this file are constants used for database operations on SIPRI's Arms Transfer Database.
+
+@author Victor Mercola
+@author Benjamin Lunden
+@author Jack Ayvazian
+"""
 from typing import Dict, Tuple, List
 
 
@@ -224,7 +233,7 @@ alpha-3 code.
 
 # SIPRI_CODES: List[str] = list(map(lambda x: x[0], ENTITY_DICT.values()))
 # """
-# List of SIPRI codes.
+# List of SIPRI codes. Deprecated because it already can be derived from ENTITY_DICT.
 # """
 
 CSV_HEADER: str = "tidn,buyercod,sellercod,odat,odai,onum,onai,ldat,term,desig2,wcat,desc,coprod,nrdel,nrdelai," \

@@ -1,3 +1,13 @@
+"""
+@file map_drawing.py
+
+The functions in this file are used for drawing the maps.
+
+@author Victor Mercola
+@author Benjamin Lunden
+@author Jack Ayvazian
+"""
+
 import numpy as np
 import pandas as pd
 import plotly.express as px
