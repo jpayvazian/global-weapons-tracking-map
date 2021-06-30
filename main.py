@@ -8,6 +8,8 @@ Top-level operations for generating the map for the Global Weapons Tracking webs
 @author Jack Ayvazian
 """
 
+import os
+import shutil
 import gen_db
 import db_ops
 import map_drawing
@@ -34,6 +36,17 @@ if __name__ == "__main__":
     else:
         tl_i_map_df = db_ops.load_tl_map_df(True)
         tl_e_map_df = db_ops.load_tl_map_df(False)
+
+    try:
+        # Try to create the "plots" folder locally
+        os.mkdir("plots")
+        print("\"plots\" folder created")
+    except FileExistsError:
+        # If that folder already exists, wipe it & remake it
+        print("\"plots\" folder already exists; deleting & remaking")
+        if os.path.exists("plots"):
+            shutil.rmtree("plots")
+        os.mkdir("plots")
 
     if prompt("Draw timelapse import map [y/N]?"):
         map_drawing.draw_tl_map(tl_i_map_df, True)

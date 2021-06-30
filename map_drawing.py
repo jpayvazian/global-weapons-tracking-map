@@ -19,7 +19,7 @@ LAND_COLOR = "#dddddd"
 
 def draw_tl_map(tl_map_df, is_import):
     """
-    Draws the "imports and exports over time" map using Plotly.
+    Draws the "imports/exports over time" map using Plotly.
 
     :param pd.DataFrame tl_map_df: Map DataFrame for drawing choropleth map over time.
     :param boolean is_import: True is data is imports, False if exports
@@ -30,9 +30,11 @@ def draw_tl_map(tl_map_df, is_import):
 
     if is_import:
         title = "Imports"
+        file_name = "plots/imports_map.html"
         color = "dense"
     else:
         title = "Exports"
+        file_name = "plots/exports_map.html"
         color = "amp"
 
     fig = px.choropleth(tl_map_df,
@@ -50,7 +52,10 @@ def draw_tl_map(tl_map_df, is_import):
 
     fig.update_geos(landcolor=LAND_COLOR)
 
+    # Plot the figure
     plot(fig)
+    # Export to HTML
+    fig.write_html(file_name)
 
 
 def draw_transparency_map(transparency_df):
@@ -71,7 +76,10 @@ def draw_transparency_map(transparency_df):
 
     fig.update_geos(landcolor=LAND_COLOR)
 
+    # Plot the figure
     plot(fig)
+    # Export to HTML
+    fig.write_html("plots/transparency_map.html")
 
 
 def draw_stockpiles_map(stockpiles_df):
@@ -93,7 +101,11 @@ def draw_stockpiles_map(stockpiles_df):
 
     fig.update_geos(landcolor=LAND_COLOR)
 
+    # Plot the figure
     plot(fig)
+    # Export to HTML
+    fig.write_html("plots/stockpiles_map.html")
+
 
 
 def draw_combined_ie_map(tl_i_map_df, tl_e_map_df):
@@ -129,4 +141,7 @@ def draw_combined_ie_map(tl_i_map_df, tl_e_map_df):
 
     # fig.update_geos(landcolor=LAND_COLOR)
 
+    # Plot the figure
     plot(fig)
+    # Export to HTML
+    fig.write_html("plots/combined_ie_map.html")

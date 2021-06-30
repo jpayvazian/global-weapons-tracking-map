@@ -23,7 +23,7 @@ def download_sipri_data():
     """
 
     try:
-        # Try to create the "data" file locally
+        # Try to create the "data" folder locally
         os.mkdir("data")
         print("\"data\" folder created")
     except FileExistsError:
