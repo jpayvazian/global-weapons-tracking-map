@@ -25,6 +25,7 @@ def draw_tl_map(tl_map_df, is_import):
     :param boolean is_import: True is data is imports, False if exports
     :return: None, but creates HTML file
     """
+    #TODO: add "iso_alpha": "ISO Code" to the dictionary for renaming parts of the DataFrame
 
     tl_map_df = tl_map_df.sort_values(by="odat")
 
@@ -55,7 +56,7 @@ def draw_tl_map(tl_map_df, is_import):
     # Plot the figure
     plot(fig)
     # Export to HTML
-    fig.write_html(file_name)
+    fig.write_html(file_name, include_plotlyjs="cdn")
 
 
 def draw_transparency_map(transparency_df):
@@ -79,7 +80,7 @@ def draw_transparency_map(transparency_df):
     # Plot the figure
     plot(fig)
     # Export to HTML
-    fig.write_html("plots/transparency_map.html")
+    fig.write_html("plots/transparency_map.html", include_plotlyjs="cdn")
 
 
 def draw_stockpiles_map(stockpiles_df):
@@ -104,7 +105,7 @@ def draw_stockpiles_map(stockpiles_df):
     # Plot the figure
     plot(fig)
     # Export to HTML
-    fig.write_html("plots/stockpiles_map.html")
+    fig.write_html("plots/stockpiles_map.html", include_plotlyjs="cdn")
 
 
 
@@ -144,4 +145,4 @@ def draw_combined_ie_map(tl_i_map_df, tl_e_map_df):
     # Plot the figure
     plot(fig)
     # Export to HTML
-    fig.write_html("plots/combined_ie_map.html")
+    fig.write_html("plots/combined_ie_map.html", include_plotlyjs="cdn")
