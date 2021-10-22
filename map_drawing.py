@@ -47,7 +47,7 @@ def draw_tl_map(tl_map_df, is_import):
                         animation_frame="odat",
                         hover_data=si.WCATS_DICT.keys(),
                         labels=dict(si.WCATS_DICT, **{"odat": "Year", "All": "Total"}),
-                        title="Major Conventional Weapon " + title + " over time from SIPRI",
+                        title="Major Conventional Weapon " + title + " over time (Source: Stockholm International Peace Research Institute)",
                         color_continuous_scale=color,
                         projection="robinson")
 
