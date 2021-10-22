@@ -96,7 +96,7 @@ def draw_stockpiles_map(stockpiles_df):
                         color="Stockpiles",
                         hover_data=['Year', 'Tanks', 'Combat vehicles', 'Artillery', 'Aircraft', 'Helicopters',
                                     'Warships', 'Missiles/Missile launchers', 'Stockpiles'],
-                        title="Major Conventional Weapon Stockpiles from UNROCA",
+                        title="Major Conventional Weapon Stockpiles (Source: UNROCA)",
                         color_continuous_scale="Burg",
                         projection="robinson")
 
